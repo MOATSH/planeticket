@@ -20,6 +20,13 @@ let password = ref('');
 const router = useRouter();
 
 function straightUse() {
+    const backgroundBody = document.getElementById("background-body");
+    if (backgroundBody !== null) {
+        backgroundBody.style.backgroundImage = 'none';
+        backgroundBody.style.backgroundColor = 'whitesmoke';
+    } else {
+        console.log("Element with ID 'background-body' not found.");
+    }
     router.push({ path: '/home' });
 }
 </script>
