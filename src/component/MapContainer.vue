@@ -24,21 +24,29 @@ onMounted(() => {
         plugins: [], // 如果需要插件，这里配置
     })
         .then((AMap) => {
+            let center;
+            if (props.dataset && props.dataset.length > 0) {
+                center = [-98.35, 39.50];
+            } else {
+                // 如果 dataset 为空，使用默认坐标
+                center = [-98.35, 39.50];
+            }
             map = new AMap.Map("container", {
                 viewMode: "3D",
-                zoom: 4, // 根据需要调整初始缩放级别
-                center: [props.dataset[0].longitude, props.dataset[0].latitude], // 根据dataset调整初始中心点，这是北京的经纬度
+                zoom: 5, // 根据需要调整初始缩放级别
+                center: center
             });
 
             // 遍历dataset，为每个位置创建一个标记
-            props.dataset.forEach((item) => {
-                console.log(item)
-                const marker = new AMap.Marker({
-                    position: new AMap.LngLat(item.longitude, item.latitude),
-                    content: `<div class="custom-content-marker"><img src="/favicon.ico"><h6>${item.title}</h6></div>`
+            if (props.dataset.length > 0) {
+                props.dataset.forEach((item) => {
+                    const marker = new AMap.Marker({
+                        position: new AMap.LngLat(item.longitude, item.latitude),
+                        content: `<div class="custom-content-marker"><img style="width: 18px; height: 18px;" src="/maplocation.svg"></div>`
+                    });
+                    map.add(marker);
                 });
-                map.add(marker);
-            });
+            }
         })
         .catch((e) => {
             console.error("地图加载失败:", e);
@@ -54,7 +62,7 @@ onUnmounted(() => {
 
 <style scoped>
 #container {
-    width: 100%;
+    width: 98%;
     height: 800px;
 }
 </style>
