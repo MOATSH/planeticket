@@ -1,7 +1,7 @@
 <template>
     <div id="top" style="background-color: skyblue; display: flex; align-items: center;">
         <el-tabs v-model="activeTab" class="demo-tabs" style="margin-right: 100px; width: 1600px;">
-            <el-tab-pane label="数据分析" name="analysis"></el-tab-pane>
+            <el-tab-pane label="维度数据" name="analysis"></el-tab-pane>
             <el-tab-pane label="机票查询" name="search"></el-tab-pane>
             <el-tab-pane label="航班推荐" name="recommend"></el-tab-pane>
         </el-tabs>
@@ -42,7 +42,7 @@ onMounted(() => {
     const backgroundBody = document.getElementById("background-body");
     if (backgroundBody !== null) {
         backgroundBody.style.backgroundImage = 'none';
-        backgroundBody.style.backgroundColor = 'whitesmoke';
+        backgroundBody.style.backgroundColor = 'white';
     } else {
         console.log("Element with ID 'background-body' not found.");
     }

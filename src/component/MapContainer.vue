@@ -9,7 +9,7 @@ import AMapLoader from '@amap/amap-jsapi-loader';
 // 定义接收的props，包含了地图点的数据
 const props = defineProps<{
     dataset: Array<{
-        title: string;
+        price: string;
         longitude: number;
         latitude: number;
     }>;
@@ -37,16 +37,22 @@ onMounted(() => {
                 center: center
             });
 
-            // 遍历dataset，为每个位置创建一个标记
-            if (props.dataset.length > 0) {
-                props.dataset.forEach((item) => {
+            props.dataset.forEach((item) => {
+                if (item.price !== undefined) { // 确保price不是undefined
+                    const marker = new AMap.Marker({
+                        position: new AMap.LngLat(item.longitude, item.latitude),
+                        content: `<div class="custom-content-marker"><h6 style="background-color: red; color: white">${item.price}$</h6><img style="width: 18px; height: 18px;" src="/maplocation.svg"></div>`
+                    });
+                    map.add(marker);
+                }
+                else {
                     const marker = new AMap.Marker({
                         position: new AMap.LngLat(item.longitude, item.latitude),
                         content: `<div class="custom-content-marker"><img style="width: 18px; height: 18px;" src="/maplocation.svg"></div>`
                     });
                     map.add(marker);
-                });
-            }
+                }
+            });
         })
         .catch((e) => {
             console.error("地图加载失败:", e);

@@ -7,9 +7,9 @@
             <el-input v-model="password" show-password placeholder="请输入密码" class="login-input" />
         </div>
         <div class="login-container">
-            <el-button type="primary" class="login-button" @click="login">登录</el-button>
-            <el-button type="success" class="register-button" @click="toRegister">去注册</el-button>
-            <el-link type="success" @click="straightUse" class="straight-use-link">暂不登录，直接使用</el-link>
+            <el-button type="primary" class="register-button" @click="register">注册</el-button>
+            <el-button type="success" class="login-button" @click="toLogin">去登陆</el-button>
+            <el-link type="success" @click="straightUse" class="straight-use-link">暂不注册，直接使用</el-link>
         </div>
     </div>
 </template>
@@ -34,11 +34,11 @@ function straightUse() {
     router.push({ path: '/home' });
 }
 
-function toRegister() {
-    router.push({ path: '/register' })
+function toLogin() {
+    router.push({ path: '/' })
 }
 
-function login() {
+function register() {
     
 }
 </script>

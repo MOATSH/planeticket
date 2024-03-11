@@ -5,9 +5,8 @@
                 <el-divider />
                 <h3>航空联盟表</h3>
                 <el-table :data="tableData" style="width: 100%">
-                    <el-table-column prop="date" label="航空联盟名称" width="350" />
-                    <el-table-column prop="name" label="联盟航空公司" width="350" />
-                    <el-table-column prop="address" label="航空联盟公司数量" />
+                    <el-table-column prop="alianceName" label="航空联盟名称" width="350" />
+                    <el-table-column prop="airlineCount" label="航空联盟公司数量" />
                 </el-table>
             </li>
         </ul>
