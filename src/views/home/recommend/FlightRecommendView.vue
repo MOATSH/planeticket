@@ -9,14 +9,14 @@
                     </el-select>
                     <span>
                         <el-text class="mx-1" type="success">查询推荐目的地</el-text>
-                        <el-button :icon="Search" circle></el-button>
+                        <el-button :icon="Search" circle @click="whereButtonClick"></el-button>
                     </span>
                 </div>
             </li>
             <li>
                 <el-divider />
-                <h3>地图</h3>
-                <map-container :dataset="destResponse.mapInfo" />
+                <h3>分布图</h3>
+                <map-container :dataset="destResponse.mapInfo" :clickMap="clickMap" />
             </li>
             <li>
                 <el-divider />
@@ -36,10 +36,10 @@
                 <h3>没有其他数据了~</h3>
             </li>
         </ul>
-        <el-dialog v-model="dialogTableVisible">
-            <div style="display: flex; gap: 70px">
-                <div id="toPriceChart" style="width: 600px; height:400px;"></div>
-                <div id="backPriceChart" style="width: 600px; height:400px;"></div>
+        <el-dialog v-model="dialogTableVisible" width="1600" align-center>
+            <div>
+                <div id="toPriceChart"></div>
+                <div id="backPriceChart"></div>
             </div>
         </el-dialog>
     </div>
@@ -47,11 +47,12 @@
 
 <script setup lang='ts' name="FlightRecommendView">
 import MapContainer from '@/component/MapContainer.vue'
-import { nextTick, ref } from 'vue'
+import { nextTick, reactive, ref, watch } from 'vue'
 import {
     Search
 } from '@element-plus/icons-vue'
 import * as echarts from 'echarts';
+import axios from 'axios';
 
 const dateValue = ref('')
 const destCityValue = ref('')
@@ -59,6 +60,9 @@ const departureCityValue = ref('')
 const dialogTableVisible = ref(false)
 let toPriceChart: any = null
 let backPriceChart: any = null
+let destResponse = reactive({
+    'mapInfo': []
+})
 
 const citys = [
     { "value": "ATLANTA", "label": "ATLANTA" },
@@ -77,103 +81,123 @@ const citys = [
     { "value": "SAN FRANCISCO", "label": "SAN FRANCISCO" }
 ]
 
-
-let destResponse = {
-    'mapInfo': [{ 'longitude': -78.136452, 'latitude': 35.319266, 'price': '174.84' },
-    { 'longitude': -77.057438, 'latitude': 49.313539, 'price': '256.31' },
-    { 'longitude': -105.725863, 'latitude': 40.926889, 'price': '373.48' }]
-}
-
-let timeResponse = {
-    'departureCity': 'Houston',
-    'destCity': 'ChicaGo',
-    'priceList': [
+let timeToResponse = ref({
+    "departureCity": departureCityValue.value,
+    "destCity": destCityValue.value,
+    priceList: [
         {
-            'price': '260.05', 'date': '2024-01-01'
-        },
-        {
-            'price': '976.89', 'date': '2024-02-01'
-        },
-        {
-            'price': '223.89', 'date': '2024-03-01'
-        },
-        {
-            'price': '799.49', 'date': '2024-04-01'
-        },
-        {
-            'price': '722.95', 'date': '2024-05-01'
-        },
-        {
-            'price': '866.84', 'date': '2024-06-01'
-        },
-        {
-            'price': '645.09', 'date': '2024-07-01'
-        },
-        {
-            'price': '953.97', 'date': '2024-08-01'
-        },
-        {
-            'price': '946.73', 'date': '2024-09-01'
-        },
-        {
-            'price': '466.28', 'date': '2024-10-01'
-        },
-        {
-            'price': '282.11', 'date': '2024-11-01'
-        },
-        {
-            'price': '734.99', 'date': '2024-12-01'
+            "date": '',
+            "price": ''
         }
     ]
-}
+})
+let timeBackResponse = ref({
+    "departureCity": destCityValue.value,
+    "destCity": departureCityValue.value,
+    priceList: [
+        {
+            "date": '',
+            "price": ''
+        }
+    ]
+})
 
-function timeButtonClick() {
+async function timeButtonClick() {
     dialogTableVisible.value = true;
     // 确保图表在 dialog 可见后初始化
 
-    nextTick(() => {
-        if (!toPriceChart) {
-            toPriceChart = echarts.init(document.getElementById('toPriceChart'));
-        }
+    nextTick(async () => {
         if (departureCityValue.value != '' && destCityValue.value != '') {
-            let toTitle = departureCityValue.value + '-->' + destCityValue.value
-            toPriceChart.setOption({
-                title: { text: toTitle },
-                tooltip: {},
-                xAxis: {
-                    type: 'category',
-                    data: timeResponse.priceList.map(item => item.date)
-                },
-                yAxis: { type: 'value' },
-                series: [{
-                    data: timeResponse.priceList.map(item => parseFloat(item.price)),
-                    type: 'line'
-                }]
-            });
-            if (!backPriceChart) {
-                backPriceChart = echarts.init(document.getElementById('backPriceChart'));
-            }
-            let backTitle = destCityValue.value + '-->' + departureCityValue.value
-            backPriceChart.setOption({
-                title: { text: backTitle },
-                tooltip: {},
-                xAxis: {
-                    type: 'category',
-                    data: timeResponse.priceList.map(item => item.date)
-                },
-                yAxis: { type: 'value' },
-                series: [{
-                    data: timeResponse.priceList.map(item => parseFloat(item.price)),
-                    type: 'line'
-                }]
-            });
+            timeToResponse.value = (await axios.post('http://127.0.0.1/api/flightInfo/recommend/time', {
+                "departureCity": departureCityValue.value,
+                "destCity": destCityValue.value
+            })).data
+            timeBackResponse.value = (await axios.post('http://127.0.0.1/api/flightInfo/recommend/time', {
+                "departureCity": destCityValue.value,
+                "destCity": departureCityValue.value
+            })).data
         }
         else {
             toPriceChart.setOption({
-                title: { text: '请选择出发城市和目的城市！！！'}
+                title: { text: '请选择出发城市和目的城市！！！' }
             })
         }
     });
+}
+
+watch(timeToResponse, (newValue, oldValue) => {
+    if (!toPriceChart) {
+        toPriceChart = echarts.init(document.getElementById('toPriceChart'), null, { width: 1600, height: 900 });
+    }
+    let toTitle = '去程' + newValue.departureCity + '-->' + newValue.destCity
+    toPriceChart.setOption({
+        title: { text: toTitle },
+        tooltip: {},
+        xAxis: {
+            type: 'category',
+            data: timeToResponse.value.priceList.map((item => item.date)),
+            name: '日期'
+        },
+        yAxis: { type: 'value', 'name': '价格$' },
+        series: [{
+            data: timeToResponse.value.priceList.map(item => parseFloat(item.price)),
+            type: 'line'
+        }]
+    });
+}, { deep: true })
+watch(timeBackResponse, (newValue, oldValue) => {
+    if (!backPriceChart) {
+        backPriceChart = echarts.init(document.getElementById('backPriceChart'), null, { width: 1600, height: 900 });
+    }
+    let backTitle = '返程' + newValue.departureCity + '-->' + newValue.destCity
+    backPriceChart.setOption({
+        title: { text: backTitle },
+        tooltip: {},
+        xAxis: {
+            type: 'category',
+            data: timeBackResponse.value.priceList.map(item => item.date),
+            name: '日期'
+        },
+        yAxis: { type: 'value', 'name': '价格$' },
+        series: [{
+            data: timeBackResponse.value.priceList.map(item => parseFloat(item.price)),
+            type: 'line'
+        }]
+    });
+}, { deep: true })
+
+function formatDateToMidnightLocal(dateString: any) {
+    let date = new Date(dateString);
+    date.setHours(0, 0, 0, 0); // 将时间调整为00:00:00
+    // 手动构建格式为 YYYY-MM-DDT00:00:00 的字符串
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1; // getMonth() 返回的月份从 0 开始
+    const day = date.getDate();
+    const formattedDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}T00:00:00`;
+    return formattedDate;
+}
+
+async function whereButtonClick() {
+    let adjustedDate = formatDateToMidnightLocal(dateValue.value); // 使用新的函数调整日期
+    let postData = {
+        'date': adjustedDate,
+        'departureCity': departureCityValue.value
+    };
+    destResponse.mapInfo = (await axios.post("http://127.0.0.1:80/api/flightInfo/recommend/destination", postData)).data.mapInfo;
+
+}
+
+async function clickMap(value: string) {
+    dialogTableVisible.value = true;
+
+    timeToResponse.value = (await axios.post('http://127.0.0.1/api/flightInfo/recommend/time', {
+        "departureCity": departureCityValue.value,
+        "destCity": value
+    })).data
+    timeBackResponse.value = (await axios.post('http://127.0.0.1/api/flightInfo/recommend/time', {
+        "departureCity": value,
+        "destCity": departureCityValue.value
+    })).data
 }
 </script>
 
@@ -188,5 +212,11 @@ function timeButtonClick() {
     display: flex;
     align-items: center;
     gap: 50px;
+}
+
+#toPriceChart,
+#backPriceChart {
+    width: 1600px;
+    height: 900px;
 }
 </style>
