@@ -12,15 +12,23 @@
             <el-link type="success" @click="straightUse" class="straight-use-link">暂不登录，直接使用</el-link>
         </div>
     </div>
+    <el-dialog v-model="dialogTableVisible" width="800" align-center>
+        <div>
+            <h1>{{ message }}</h1>
+        </div>
+    </el-dialog>
 </template>
 
 <script setup lang='ts'>
+import axios from 'axios';
 import { ElButton, ElInput, ElLink } from 'element-plus';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 let userName = ref('');
 let password = ref('');
+let dialogTableVisible = ref(false)
+let message = ref('')
 const router = useRouter();
 
 function straightUse() {
@@ -38,8 +46,26 @@ function toRegister() {
     router.push({ path: '/register' })
 }
 
-function login() {
-    
+async function login() {
+    let ret = await (await axios.get(`http://127.0.0.1:80/api/userInfo/login?userName=${userName.value}&password=${password.value}`)).data
+    if (ret == true) {
+        message.value = '登录成功！'
+        dialogTableVisible.value = true
+        setTimeout(() => {
+            const backgroundBody = document.getElementById("background-body");
+            if (backgroundBody !== null) {
+                backgroundBody.style.backgroundImage = 'none';
+                backgroundBody.style.backgroundColor = 'whitesmoke';
+            } else {
+                console.log("Element with ID 'background-body' not found.");
+            }
+            router.push({ path: '/home' });
+        },1000)
+    }
+    else {
+        message.value = '登录失败！'
+        dialogTableVisible.value = true
+    }
 }
 </script>
 

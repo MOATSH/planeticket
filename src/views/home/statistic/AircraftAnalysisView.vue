@@ -4,9 +4,9 @@
             <li>
                 <el-divider />
                 <h3>机型信息表</h3>
-                <el-table :data="tableData" style="width: 100%">
-                    <el-table-column prop="airCraftTypeName" label="机型名称" width="350" />
-                    <el-table-column prop="manufacture" label="制造商" width="350" />
+                <el-table :data="tableData" style="width: 98%" height="800">
+                    <el-table-column prop="aircraftTypeName" label="机型名称" />
+                    <el-table-column prop="manufacturer" label="制造商" />
                 </el-table>
             </li>
         </ul>
@@ -14,43 +14,14 @@
 </template>
 
 <script setup lang='ts' name="AircraftAnalysisView">
-const tableData = [
-    {
-        date: '2016-05-03',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-        date: '2016-05-02',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-        date: '2016-05-04',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-        date: '2016-05-01',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-        date: '2016-05-01',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-        date: '2016-05-01',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-        date: '2016-05-01',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    }
-]
+import axios from 'axios';
+import { onMounted } from 'vue';
+import { ref } from 'vue';
+let tableData = ref([])
+
+onMounted(async () => {
+    tableData.value = (await axios.get('http://127.0.0.1:80/api/aircraftTypeInfo/list')).data
+})
 </script>
 
 <style></style>

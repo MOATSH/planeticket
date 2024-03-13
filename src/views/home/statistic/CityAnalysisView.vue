@@ -5,9 +5,9 @@
                 <el-divider />
                 <h3>城市信息表</h3>
                 <el-table :data="tableData" style="width: 98%" height="500">
-                    <el-table-column prop="title" label="城市名称" width="350" />
-                    <el-table-column prop="cityCode" label="城市三字码" width="350" />
-                    <el-table-column prop="longitude" label="经度" width="350" />
+                    <el-table-column prop="title" label="城市名称" />
+                    <el-table-column prop="cityCode" label="城市三字码" />
+                    <el-table-column prop="longitude" label="经度" />
                     <el-table-column prop="latitude" label="维度" />
                 </el-table>
             </li>

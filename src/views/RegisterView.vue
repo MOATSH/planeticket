@@ -12,15 +12,23 @@
             <el-link type="success" @click="straightUse" class="straight-use-link">暂不注册，直接使用</el-link>
         </div>
     </div>
+    <el-dialog v-model="dialogTableVisible" width="800" align-center>
+        <div>
+            <h1>{{ message }}</h1>
+        </div>
+    </el-dialog>
 </template>
 
 <script setup lang='ts'>
+import axios from 'axios';
 import { ElButton, ElInput, ElLink } from 'element-plus';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 let userName = ref('');
 let password = ref('');
+let dialogTableVisible = ref(false)
+let message = ref('')
 const router = useRouter();
 
 function straightUse() {
@@ -38,8 +46,19 @@ function toLogin() {
     router.push({ path: '/' })
 }
 
-function register() {
-    
+async function register() {
+    let ret = (await axios.get(`http://127.0.0.1/api/userInfo/register?userName=${userName.value}&password=${password.value}`)).data
+    if (ret == true) {
+        message.value = '注册成功'
+        dialogTableVisible.value = true
+        setTimeout(() => {
+            router.push({ path: '/' })
+        }, 1000)
+    }
+    else {
+        message.value = '注册失败'
+        dialogTableVisible.value = true
+    }
 }
 </script>
 

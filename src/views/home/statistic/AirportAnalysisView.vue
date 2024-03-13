@@ -5,9 +5,9 @@
                 <el-divider />
                 <h3>机场信息表</h3>
                 <el-table :data="tableData" style="width: 98%" height="500">
-                    <el-table-column prop="title" label="机场名称" width="350" />
-                    <el-table-column prop="cityName" label="所在城市" width="350" />
-                    <el-table-column prop="airportCode" label="机场三字码" width="350" />
+                    <el-table-column prop="title" label="机场名称" />
+                    <el-table-column prop="cityName" label="所在城市" />
+                    <el-table-column prop="airportCode" label="机场三字码" />
                     <el-table-column prop="longitude" label="经度" />
                     <el-table-column prop="latitude" label="维度" />
                 </el-table>
