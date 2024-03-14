@@ -4,8 +4,8 @@
             <li>
                 <el-divider />
                 <h3>航空联盟表</h3>
-                <el-table :data="tableData" style="width: 100%">
-                    <el-table-column prop="alianceName" label="航空联盟名称" width="350" />
+                <el-table :data="tableData" style="width: 90%">
+                    <el-table-column prop="allianceName" label="航空联盟名称" />
                     <el-table-column prop="airlineCount" label="航空联盟公司数量" />
                 </el-table>
             </li>
@@ -14,43 +14,15 @@
 </template>
 
 <script setup lang='ts' name="AlianceAnalysisView">
-const tableData = [
-    {
-        date: '2016-05-03',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-        date: '2016-05-02',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-        date: '2016-05-04',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-        date: '2016-05-01',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-        date: '2016-05-01',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-        date: '2016-05-01',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-        date: '2016-05-01',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    }
-]
+import axios from 'axios';
+import { onMounted } from 'vue';
+import { ref } from 'vue';
+
+let tableData = ref([])
+
+onMounted(async () => {
+    tableData.value = (await axios.get('http://127.0.0.1:80/api/airlineAllianceInfo/list')).data
+})
 </script>
 
 <style></style>

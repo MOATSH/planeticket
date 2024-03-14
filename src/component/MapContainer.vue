@@ -14,7 +14,8 @@ const props = defineProps<{
         latitude: number;
         cityName: string
     }>;
-    clickMap: Function; // 假设 clickMap 是一个函数
+    clickMap: Function;
+    departure: string;
 }>();
 
 let map: any = null;
@@ -111,6 +112,28 @@ watch(() => props.dataset, (newVal, oldVal) => {
                     map.add(marker);
                 }
             });
+            const request = new XMLHttpRequest();
+            let cityInfo = {}
+            try {
+                request.open('GET', `http://127.0.0.1:80/api/cityInfo/getSingle?cityName=${props.departure}`, false); // 同步请求
+                request.send(); // 发送请求
+
+                if (request.status >= 200 && request.status < 300) {
+                    // 请求成功，解析响应文本为 JSON
+                    cityInfo = JSON.parse(request.responseText);
+                } else {
+                    // 请求失败，处理错误（例如：可以抛出异常或者记录错误信息）
+                    console.error('Request failed with status:', request.status);
+                }
+            } catch (error) {
+                // 捕获请求过程中的异常（如网络错误等）
+                console.error('Request failed:', error);
+            }
+            const marker = new AMap.Marker({
+                position: new AMap.LngLat(cityInfo.longitude, cityInfo.latitude),
+                content: `<div class="custom-content-marker"><h>${cityInfo.cityName}</h><img style="width: 18px; height: 18px;" src="/star.svg"></div>`
+            });
+            map.add(marker);
         })
         .catch((e) => {
             console.error("地图加载失败:", e);
@@ -122,7 +145,7 @@ watch(() => props.dataset, (newVal, oldVal) => {
 
 <style scoped>
 #container {
-    width: 98%;
+    width: 90%;
     height: 800px;
 }
 </style>

@@ -1,10 +1,10 @@
 <template>
-    <div>
+    <div class="airportStatistic">
         <ul class="infinite-list">
             <li>
                 <el-divider />
                 <h3>机场信息表</h3>
-                <el-table :data="tableData" style="width: 98%" height="500">
+                <el-table :data="tableData" style="width: 90%" height="500">
                     <el-table-column prop="title" label="机场名称" />
                     <el-table-column prop="cityName" label="所在城市" />
                     <el-table-column prop="airportCode" label="机场三字码" />
@@ -16,10 +16,6 @@
                 <el-divider />
                 <h3>分布图</h3>
                 <map-container :dataset="dataset" />
-            </li>
-            <li>
-                <el-divider />
-                <h3>没有其他数据了~</h3>
             </li>
         </ul>
     </div>
@@ -57,7 +53,7 @@ try {
     console.error('Request failed:', error);
 }
 
-onMounted(async() => {
+onMounted(async () => {
     tableData.value = (await axios.get('http://127.0.0.1:80/api/airportInfo/list')).data
 })
 </script>

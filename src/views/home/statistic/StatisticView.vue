@@ -1,5 +1,5 @@
 <template>
-    <div style="">
+    <div style="background-color: whitesmoke;">
         <el-tabs v-model="activeTab" class="demo-tabs" @tab-click="handleTabClick">
             <el-tab-pane label="机场" name="airport"></el-tab-pane>
             <el-tab-pane label="城市" name="city"></el-tab-pane>

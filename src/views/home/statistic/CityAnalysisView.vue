@@ -4,7 +4,7 @@
             <li>
                 <el-divider />
                 <h3>城市信息表</h3>
-                <el-table :data="tableData" style="width: 98%" height="500">
+                <el-table :data="tableData" style="width: 90%" height="500">
                     <el-table-column prop="title" label="城市名称" />
                     <el-table-column prop="cityCode" label="城市三字码" />
                     <el-table-column prop="longitude" label="经度" />
@@ -15,10 +15,6 @@
                 <el-divider />
                 <h3>分布图</h3>
                 <map-container :dataset="dataset" />
-            </li>
-            <li>
-                <el-divider />
-                <h3>没有其他数据了~</h3>
             </li>
         </ul>
     </div>

@@ -4,7 +4,7 @@
             <li>
                 <el-divider />
                 <h3>机型信息表</h3>
-                <el-table :data="tableData" style="width: 98%" height="800">
+                <el-table :data="tableData" style="width: 90%" height="800">
                     <el-table-column prop="aircraftTypeName" label="机型名称" />
                     <el-table-column prop="manufacturer" label="制造商" />
                 </el-table>

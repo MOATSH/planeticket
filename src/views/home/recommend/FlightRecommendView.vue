@@ -1,10 +1,10 @@
 <template>
-    <div>
+    <div style="background-color: whitesmoke;">
         <ul class="infinite-list">
             <li>
                 <div id="destination">
                     <el-date-picker v-model="dateValue" type="date" placeholder="请选择您的出发日期" size=default />
-                    <el-select v-model="departureCityValue" placeholder="请选择您的出发地点" style="width: 240px">
+                    <el-select v-model="departureCityValue" placeholder="请选择您的出发城市" style="width: 240px">
                         <el-option v-for="item in citys" :key="item.value" :label="item.label" :value="item.value" />
                     </el-select>
                     <span>
@@ -16,7 +16,7 @@
             <li>
                 <el-divider />
                 <h3>分布图</h3>
-                <map-container :dataset="destResponse.mapInfo" :clickMap="clickMap" />
+                <map-container :dataset="destResponse.mapInfo" :clickMap="clickMap" :departure="departureCityValue" />
             </li>
             <li>
                 <el-divider />
@@ -30,10 +30,6 @@
                         <el-button :icon="Search" circle @click="timeButtonClick"></el-button>
                     </span>
                 </div>
-            </li>
-            <li>
-                <el-divider />
-                <h3>没有其他数据了~</h3>
             </li>
         </ul>
         <el-dialog v-model="dialogTableVisible" width="1600" align-center>
@@ -53,6 +49,7 @@ import {
 } from '@element-plus/icons-vue'
 import * as echarts from 'echarts';
 import axios from 'axios';
+import { ElMessage } from 'element-plus';
 
 const dateValue = ref('')
 const destCityValue = ref('')
@@ -103,11 +100,14 @@ let timeBackResponse = ref({
 })
 
 async function timeButtonClick() {
-    dialogTableVisible.value = true;
-    // 确保图表在 dialog 可见后初始化
+    if (departureCityValue.value == '' || destCityValue.value == '') {
+        ElMessage.error('请选择出发城市和目的城市！')
+    }
+    else {
+        dialogTableVisible.value = true;
+        // 确保图表在 dialog 可见后初始化
 
-    nextTick(async () => {
-        if (departureCityValue.value != '' && destCityValue.value != '') {
+        nextTick(async () => {
             timeToResponse.value = (await axios.post('http://127.0.0.1/api/flightInfo/recommend/time', {
                 "departureCity": departureCityValue.value,
                 "destCity": destCityValue.value
@@ -116,13 +116,9 @@ async function timeButtonClick() {
                 "departureCity": destCityValue.value,
                 "destCity": departureCityValue.value
             })).data
-        }
-        else {
-            toPriceChart.setOption({
-                title: { text: '请选择出发城市和目的城市！！！' }
-            })
-        }
-    });
+
+        });
+    }
 }
 
 watch(timeToResponse, (newValue, oldValue) => {
@@ -178,6 +174,9 @@ function formatDateToMidnightLocal(dateString: any) {
 }
 
 async function whereButtonClick() {
+    if (departureCityValue.value == '' || dateValue.value == '') {
+        ElMessage.error('请选择出发时间和出发城市！')
+    }
     let adjustedDate = formatDateToMidnightLocal(dateValue.value); // 使用新的函数调整日期
     let postData = {
         'date': adjustedDate,

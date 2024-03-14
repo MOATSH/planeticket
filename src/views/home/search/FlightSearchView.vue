@@ -13,9 +13,55 @@
                     <el-button :icon="Search" circle></el-button>
                 </div>
             </li>
+            <el-divider />
             <li>
-                <el-divider />
-                <h3>没有其他数据了~</h3>
+                <div>
+                    <el-dropdown class="dropdown-item">
+                        <span class="el-dropdown-link">
+                            机票总价
+                            <el-icon class="el-icon--right">
+                                <arrow-down />
+                            </el-icon>
+                        </span>
+                        <template #dropdown>
+                            <el-dropdown-menu>
+                                <el-dropdown-item>升序</el-dropdown-item>
+                                <el-dropdown-item>降序</el-dropdown-item>
+                            </el-dropdown-menu>
+                        </template>
+                    </el-dropdown>
+                    <el-dropdown class="dropdown-item">
+                        <span class="el-dropdown-link">
+                            飞行总距离
+                            <el-icon class="el-icon--right">
+                                <arrow-down />
+                            </el-icon>
+                        </span>
+                        <template #dropdown>
+                            <el-dropdown-menu>
+                                <el-dropdown-item>升序</el-dropdown-item>
+                                <el-dropdown-item>降序</el-dropdown-item>
+                            </el-dropdown-menu>
+                        </template>
+                    </el-dropdown>
+                    <el-dropdown class="dropdown-item">
+                        <span class="el-dropdown-link">
+                            飞行总时间
+                            <el-icon class="el-icon--right">
+                                <arrow-down />
+                            </el-icon>
+                        </span>
+                        <template #dropdown>
+                            <el-dropdown-menu>
+                                <el-dropdown-item>升序</el-dropdown-item>
+                                <el-dropdown-item>降序</el-dropdown-item>
+                            </el-dropdown-menu>
+                        </template>
+                    </el-dropdown>
+                </div>
+                <ul class="straightList">
+                    <TicketInfo :segments="segments" />
+                </ul>
             </li>
         </ul>
     </div>
@@ -23,14 +69,39 @@
 
 <script setup lang='ts' name="FlightSearchView">
 import { ref } from 'vue'
+import TicketInfo from '@/component/TicketInfo.vue'
 import {
-    Search
+    Search,
+    ArrowDown
 } from '@element-plus/icons-vue'
 
 const dateValue = ref('')
-
 const destValue = ref('')
-
+let segments = ref([
+    {
+        "departureCity": "北京",
+        "dePartureAirport": "首都国际机场",
+        "destCity": "上海",
+        "destAirport": "浦东国际机场",
+        "departureDate": "2024-03-20",
+        "totalFare": "￥1200",
+        "totalDistance": "1210公里",
+        "travelDuration": "2小时",
+        "arrivalDate": "2024-03-20"
+    },
+    {
+        "departureCity": "纽约",
+        "dePartureAirport": "约翰·肯尼迪国际机场",
+        "destCity": "洛杉矶",
+        "destAirport": "洛杉矶国际机场",
+        "departureDate": "2024-03-22",
+        "totalFare": "$300",
+        "totalDistance": "3940公里",
+        "travelDuration": "6小时",
+        "arrivalDate": "2024-03-22"
+    }
+]
+)
 const options = [
     {
         value: 'Option1',
@@ -55,5 +126,19 @@ const options = [
 ]
 </script>
 
-<style>
+<style scoped>
+.el-dropdown-link {
+    cursor: pointer;
+    color: var(--el-color-primary) !important;
+    display: flex;
+    align-items: center;
+}
+
+.dropdown-item:not(:last-of-type) {
+    margin-right: 50px;
+}
+
+.dropdown-item:first-of-type {
+    margin-left: 50px;
+}
 </style>
