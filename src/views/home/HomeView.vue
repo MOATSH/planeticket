@@ -1,8 +1,8 @@
 <template>
-    <div id="top" style="background-color: #333333; display: flex; align-items: center; color: white;">
+    <div id="top">
         <el-tabs v-model="activeTab" class="demo-tabs" style="margin-right: 60px; width: 1600px;">
             <el-tab-pane label="维度数据" name="analysis"></el-tab-pane>
-            <el-tab-pane label="机票查询" name="search"></el-tab-pane>
+            <el-tab-pane label="查找航班" name="search"></el-tab-pane>
             <el-tab-pane label="航班推荐" name="recommend"></el-tab-pane>
         </el-tabs>
         <h2 style="margin-right: 60px;">机票元数据分析</h2>
@@ -12,8 +12,7 @@
     </div>
 
     <component :is="currentComponent"></component>
-    <div class="footer"
-        style="background-color: white; position: relative; display: flex; flex-direction: column; justify-content: space-between;">
+    <div class="footer">
         <div>
             <el-space direction="vertical">
                 <el-text>
@@ -89,7 +88,24 @@ onMounted(() => {
     height: 100%;
 }
 
+#top {
+    background-color: #333333;
+    display: flex;
+    align-items: center;
+    color: white;
+}
+
 #top .el-tabs__item {
     color: white !important;
+}
+
+.footer {
+    background-color: white;
+    position: sticky;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
 }
 </style>

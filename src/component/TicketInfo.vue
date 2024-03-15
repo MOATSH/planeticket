@@ -12,7 +12,7 @@
                 <span class="distance">{{ segment.totalDistance }}</span>
                 <span class="duration">{{ segment.travelDuration }}</span>
                 <!-- Arrow or Line -->
-                <span class="arrow">-----></span>
+                <span class="arrow"><img src="/arrow.svg" /></span>
             </div>
             <!-- Destination City and Date -->
             <div v-if="index === segments.length - 1" class="city-box">
@@ -49,24 +49,43 @@ defineProps({
 <style scoped>
 .timeline {
     display: flex;
+    flex-wrap: nowrap;
     align-items: center;
     background-color: #fff;
     padding: 16px;
     border: 1px solid #ccc;
     overflow-x: auto;
     width: 90%;
+    height: 95px;
+    margin: 10px;
+    border-radius: 20px;
 }
 
 .segment {
     display: flex;
+    flex-grow: 1;
     align-items: center;
+    flex-basis: 0;
+    min-width: 0;
 }
 
 .city-box {
+    flex: 1;
     text-align: center;
     margin-right: 20px;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid black;
+    border-radius: 15px;
+    color: var(--el-color-primary);
+}
+
+.travel-info {
+    display: flex;
+    flex-direction: row;
+    margin-right: 5px;
+    align-items: center;
+    text-align: center;
+    padding: 10px;
 }
 
 .city-name {
@@ -79,19 +98,15 @@ defineProps({
     margin-top: 4px;
 }
 
-.travel-info {
-    display: flex;
-    align-items: center;
-    margin-right: 20px;
-}
-
 .price,
 .distance,
 .duration {
-    margin-right: 10px;
+    margin-right: 5px;
     padding: 2px 10px;
-    border: 1px solid #ccc;
     white-space: nowrap;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    color: var(--el-color-primary);
 }
 
 .arrow {

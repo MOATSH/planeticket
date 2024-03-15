@@ -8,7 +8,6 @@
                         <el-option v-for="item in citys" :key="item.value" :label="item.label" :value="item.value" />
                     </el-select>
                     <span>
-                        <el-text class="mx-1" type="success">查询推荐目的地</el-text>
                         <el-button :icon="Search" circle @click="whereButtonClick"></el-button>
                     </span>
                 </div>
@@ -26,7 +25,6 @@
                         <el-option v-for="item in citys" :key="item.value" :label="item.label" :value="item.value" />
                     </el-select>
                     <span>
-                        <el-text class="mx-1" type="success">查询该目的地的机票价格趋势</el-text>
                         <el-button :icon="Search" circle @click="timeButtonClick"></el-button>
                     </span>
                 </div>
