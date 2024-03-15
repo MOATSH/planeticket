@@ -49,7 +49,7 @@ import * as echarts from 'echarts';
 import axios from 'axios';
 import { ElMessage } from 'element-plus';
 
-const dateValue = ref('')
+const dateValue = ref('2022-06-01T00:00:00')
 const destCityValue = ref('')
 const departureCityValue = ref('')
 const dialogTableVisible = ref(false)

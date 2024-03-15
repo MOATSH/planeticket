@@ -3,13 +3,13 @@
         <div class="segment" v-for="(segment, index) in segments" :key="index">
             <!-- Departure City and Date -->
             <div class="city-box">
-                <div class="city-name">{{ segment.departureCity }} ({{ segment.dePartureAirport }})</div>
+                <div class="city-name">{{ segment.departureCity }} ({{ segment.departureAirport }})</div>
                 <div class="date">{{ segment.departureDate }}</div>
             </div>
             <!-- Travel Info: Fare, Distance, Duration -->
             <div v-if="segment.totalFare && segment.totalDistance && segment.travelDuration" class="travel-info">
-                <span class="price">{{ segment.totalFare }}</span>
-                <span class="distance">{{ segment.totalDistance }}</span>
+                <span class="price">{{ segment.totalFare }}$</span>
+                <span class="distance">{{ segment.totalDistance }}Mi</span>
                 <span class="duration">{{ segment.travelDuration }}</span>
                 <!-- Arrow or Line -->
                 <span class="arrow"><img src="/arrow.svg" /></span>
@@ -27,8 +27,9 @@
 import { defineProps, type PropType } from 'vue';
 
 type Segment = {
+    flightId: number;
     departureCity: string;
-    dePartureAirport: string;
+    departureAirport: string;
     destCity: string;
     destAirport: string;
     departureDate: string;
@@ -52,12 +53,12 @@ defineProps({
     flex-wrap: nowrap;
     align-items: center;
     background-color: #fff;
-    padding: 16px;
+    padding: 5px;
     border: 1px solid #ccc;
     overflow-x: auto;
-    width: 90%;
-    height: 95px;
-    margin: 10px;
+    width: 97%;
+    height: 120px;
+    margin: 5px;
     border-radius: 20px;
 }
 
@@ -72,8 +73,8 @@ defineProps({
 .city-box {
     flex: 1;
     text-align: center;
-    margin-right: 20px;
-    padding: 10px;
+    margin-right:5px;
+    padding: 5px;
     border: 1px solid black;
     border-radius: 15px;
     color: var(--el-color-primary);
@@ -85,7 +86,7 @@ defineProps({
     margin-right: 5px;
     align-items: center;
     text-align: center;
-    padding: 10px;
+    padding: 5px;
 }
 
 .city-name {
@@ -102,7 +103,7 @@ defineProps({
 .distance,
 .duration {
     margin-right: 5px;
-    padding: 2px 10px;
+    padding: 1px 5px;
     white-space: nowrap;
     border: 1px solid #ccc;
     border-radius: 10px;
