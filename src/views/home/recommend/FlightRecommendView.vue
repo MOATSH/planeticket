@@ -107,11 +107,11 @@ async function timeButtonClick() {
         // 确保图表在 dialog 可见后初始化
 
         nextTick(async () => {
-            timeToResponse.value = (await axios.post('http://127.0.0.1/api/flightInfo/recommend/time', {
+            timeToResponse.value = (await axios.post('http://8.137.118.233:80/api/flightInfo/recommend/time', {
                 "departureCity": departureCityValue.value,
                 "destCity": destCityValue.value
             })).data
-            timeBackResponse.value = (await axios.post('http://127.0.0.1/api/flightInfo/recommend/time', {
+            timeBackResponse.value = (await axios.post('http://8.137.118.233:80/api/flightInfo/recommend/time', {
                 "departureCity": destCityValue.value,
                 "destCity": departureCityValue.value
             })).data
@@ -222,11 +222,11 @@ async function whereButtonClick() {
 async function clickMap(value: string) {
     dialogTableVisible.value = true;
 
-    timeToResponse.value = (await axios.post('http://127.0.0.1/api/flightInfo/recommend/time', {
+    timeToResponse.value = (await axios.post('http://8.137.118.233:80/api/flightInfo/recommend/time', {
         "departureCity": departureCityValue.value,
         "destCity": value
     })).data
-    timeBackResponse.value = (await axios.post('http://127.0.0.1/api/flightInfo/recommend/time', {
+    timeBackResponse.value = (await axios.post('http://8.137.118.233:80/api/flightInfo/recommend/time', {
         "departureCity": value,
         "destCity": departureCityValue.value
     })).data
