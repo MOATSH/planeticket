@@ -63,21 +63,21 @@
             <el-divider />
             <li>
                 <h3>直达航班</h3>
-                <el-scrollbar height="450px" style="width: 99%;">
+                <el-scrollbar height="450px" style="width: 99%; background-color: aliceblue;">
                     <TicketInfo v-for="segements in searchResult.straight" :segments="segements" />
                 </el-scrollbar>
             </li>
             <el-divider />
             <li>
                 <h3>智能拼接</h3>
-                <el-scrollbar height="450px" style="width: 99%;">
+                <el-scrollbar height="450px" style="width: 99%; background-color: aliceblue;">
                     <TicketInfo v-for=" segements in searchResult.unStraight" :segments="segements" />
                 </el-scrollbar>
             </li>
             <el-divider />
             <li>
                 <h3>智能推荐</h3>
-                <el-scrollbar height="450px" style="width: 99%;">
+                <el-scrollbar height="450px" style="width: 99%; background-color: aliceblue;">
                     <TicketInfo v-for="segements in searchResult.recommend" :segments="segements" />
                 </el-scrollbar>
             </li>
@@ -93,7 +93,12 @@ import {
     ArrowDown
 } from '@element-plus/icons-vue'
 import axios from 'axios';
+import { ElLoading } from 'element-plus'
 
+// 从SessionStorage获取用户信息字符串
+const userInfoString = sessionStorage.getItem('userInfo');
+// 将字符串转换回对象
+const userInfo2 = JSON.parse(userInfoString || '{}');
 let dateValue = ref('2022-06-01T00:00:00')
 let destCityValue = ref('')
 let departureCityValue = ref('')
@@ -123,11 +128,23 @@ const options = [
 ]
 
 async function searchButton() {
-    searchResult.value = (await axios.post('http://127.0.0.1:80/api/flightInfo/search', {
-        "departureCity": departureCityValue.value,
-        "destCity": destCityValue.value,
-        "date": convertDateToYYYYMMDD(dateValue.value)
-    })).data
+    const loading = ElLoading.service({
+        lock: true,
+        text: 'Searching',
+        background: 'rgba(0, 0, 0, 0.7)',
+    });
+    try {
+        searchResult.value = (await axios.post('http://127.0.0.1:80/api/flightInfo/search', {
+            "departureCity": departureCityValue.value,
+            "destCity": destCityValue.value,
+            "date": convertDateToYYYYMMDD(dateValue.value),
+            "userName": userInfo2.userName
+        })).data;
+    } catch (error) {
+        console.error('An error occurred:', error);
+    } finally {
+        loading.close();
+    }
 }
 
 function convertDateToYYYYMMDD(dateString: string): string {
@@ -176,7 +193,7 @@ function sortResults(property: string, order: 'asc' | 'desc') {
     }
 
     // 应用排序
-    ['straight', 'unStraight', 'recommend'].forEach(category => {
+    ['straight', 'unStraight'].forEach(category => {
         if (searchResult.value[category]) {
             searchResult.value[category].sort(sorter)
         }

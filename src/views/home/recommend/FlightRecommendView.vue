@@ -30,9 +30,10 @@
                 </div>
             </li>
         </ul>
-        <el-dialog v-model="dialogTableVisible" width="1600" align-center>
+        <el-dialog v-model="dialogTableVisible" width="1670" align-center style="padding: 30px;">
             <div>
                 <div id="toPriceChart"></div>
+                <el-divider />
                 <div id="backPriceChart"></div>
             </div>
         </el-dialog>
@@ -125,7 +126,24 @@ watch(timeToResponse, (newValue, oldValue) => {
     }
     let toTitle = '去程' + newValue.departureCity + '-->' + newValue.destCity
     toPriceChart.setOption({
-        title: { text: toTitle },
+        visualMap: [
+            {
+                show: false,
+                type: 'continuous',
+                seriesIndex: 0,
+                min: 0,
+                max: 400
+            },
+            {
+                show: false,
+                type: 'continuous',
+                seriesIndex: 1,
+                dimension: 0,
+                min: 0,
+                max: timeToResponse.value.priceList.length - 1
+            }
+        ],
+        title: { text: toTitle, left: 'center' },
         tooltip: {},
         xAxis: {
             type: 'category',
@@ -145,7 +163,24 @@ watch(timeBackResponse, (newValue, oldValue) => {
     }
     let backTitle = '返程' + newValue.departureCity + '-->' + newValue.destCity
     backPriceChart.setOption({
-        title: { text: backTitle },
+        visualMap: [
+            {
+                show: false,
+                type: 'continuous',
+                seriesIndex: 0,
+                min: 0,
+                max: 400
+            },
+            {
+                show: false,
+                type: 'continuous',
+                seriesIndex: 1,
+                dimension: 0,
+                min: 0,
+                max: timeToResponse.value.priceList.length - 1
+            }
+        ],
+        title: { text: backTitle, left: 'center' },
         tooltip: {},
         xAxis: {
             type: 'category',
