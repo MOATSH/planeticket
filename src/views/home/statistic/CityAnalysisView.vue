@@ -36,7 +36,7 @@ let tableData = ref([])
 let dataset: AirportInfo[]; // 假设API返回的是一个数组
 const request = new XMLHttpRequest();
 try {
-    request.open('GET', 'http://127.0.0.1:80/api/cityInfo/list', false); // 同步请求
+    request.open('GET', 'http://8.137.118.233:80/api/cityInfo/list', false); // 同步请求
     request.send(); // 发送请求
 
     if (request.status >= 200 && request.status < 300) {
@@ -52,7 +52,7 @@ try {
 }
 
 onMounted(async () => {
-    tableData.value = (await axios.get('http://127.0.0.1:80/api/cityInfo/list')).data
+    tableData.value = (await axios.get('http://8.137.118.233:80/api/cityInfo/list')).data
 })
 </script>
 

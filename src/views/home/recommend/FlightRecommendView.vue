@@ -215,7 +215,7 @@ async function whereButtonClick() {
         'date': adjustedDate,
         'departureCity': departureCityValue.value
     };
-    destResponse.mapInfo = (await axios.post("http://127.0.0.1:80/api/flightInfo/recommend/destination", postData)).data.mapInfo;
+    destResponse.mapInfo = (await axios.post("http://8.137.118.233:80/api/flightInfo/recommend/destination", postData)).data.mapInfo;
 
 }
 

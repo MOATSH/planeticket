@@ -134,7 +134,7 @@ async function searchButton() {
         background: 'rgba(0, 0, 0, 0.7)',
     });
     try {
-        searchResult.value = (await axios.post('http://127.0.0.1:80/api/flightInfo/search', {
+        searchResult.value = (await axios.post('http://8.137.118.233:80/api/flightInfo/search', {
             "departureCity": departureCityValue.value,
             "destCity": destCityValue.value,
             "date": convertDateToYYYYMMDD(dateValue.value),

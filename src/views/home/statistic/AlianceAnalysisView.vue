@@ -21,7 +21,7 @@ import { ref } from 'vue';
 let tableData = ref([])
 
 onMounted(async () => {
-    tableData.value = (await axios.get('http://127.0.0.1:80/api/airlineAllianceInfo/list')).data
+    tableData.value = (await axios.get('http://8.137.118.233:80/api/airlineAllianceInfo/list')).data
 })
 </script>
 

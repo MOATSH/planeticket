@@ -115,7 +115,7 @@ watch(() => props.dataset, (newVal, oldVal) => {
             const request = new XMLHttpRequest();
             let cityInfo = {}
             try {
-                request.open('GET', `http://127.0.0.1:80/api/cityInfo/getSingle?cityName=${props.departure}`, false); // 同步请求
+                request.open('GET', `http://8.137.118.233:80/api/cityInfo/getSingle?cityName=${props.departure}`, false); // 同步请求
                 request.send(); // 发送请求
 
                 if (request.status >= 200 && request.status < 300) {

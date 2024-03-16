@@ -97,7 +97,7 @@ function toRegister() {
 }
 
 async function login() {
-    let ret = await (await axios.get(`http://127.0.0.1:80/api/userInfo/login?userName=${userName.value}&password=${password.value}`)).data
+    let ret = await (await axios.get(`http://8.137.118.233:80/api/userInfo/login?userName=${userName.value}&password=${password.value}`)).data
     if (ret == true) {
         ElMessage({
             message: '登录成功，欢迎使用~',
@@ -127,7 +127,7 @@ async function login() {
 }
 
 async function registerConfirm() {
-    let ret = (await axios.post('http://127.0.0.1:80/api/userInfo/register', {
+    let ret = (await axios.post('http://8.137.118.233:80/api/userInfo/register', {
         "name": form.name,
         "age": form.age,
         "gender": form.gender,
